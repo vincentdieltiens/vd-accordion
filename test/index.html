@@ -11,20 +11,20 @@
 	<body>
 		<h2>Simple accordion</h2>
 		<div ng-controller="example1">
-			<accordion close-all>
-				<accordion-pane>
+			<vd-accordion close-all>
+				<vd-accordion-pane>
 					<div class="accordion-head">Tab 1</div>
 					<div class="accordion-content">
 						{{2+2}} {{plop}}
 					</div>
 				</accordion-pane>
-				<accordion-pane>
+				<vd-accordion-pane>
 					<div class="accordion-head">Tab 2</div>
 					<div class="accordion-content">
 						{{2+3}} {{plop}} {{test}}
 					</div>
 				</accordion-pane>
-				<accordion-pane>
+				<vd-accordion-pane>
 					<div class="accordion-head">Tab 3</div>
 					<div class="accordion-content">
 						{{2+3}} {{plop}} {{test}}
@@ -35,8 +35,8 @@
 
 		<h2>Accordion with repeat</h2>
 		<div ng-controller="example2">
-			<accordion close-all>
-				<accordion-pane repeat="contact in contacts">
+			<vd-accordion close-all>
+				<vd-accordion-pane repeat="contact in contacts">
 					<div class="accordion-head">Contact {{ contact.name }}</div>
 					<div class="accordion-content">
 						<input type="text" ng-model="contact.name" /> {{ test }}

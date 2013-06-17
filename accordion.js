@@ -2,7 +2,7 @@ angular.module('vd.directive.accordion', [])
 	/**
 	 * 
 	 */
-	.directive('vd-accordion', function() {
+	.directive('vdAccordion', function() {
 		return {
 			restrict:'AE',
 			replace: true,
@@ -48,10 +48,10 @@ angular.module('vd.directive.accordion', [])
 			template: '<div class="accordion" ng-transclude></div>'
 		};
 	})
-	.directive('accordionPane', function($compile) {
+	.directive('vdAccordionPane', function($compile) {
 		return {
 			restrict:'AE',
-			require: '^accordion',
+			require: '^vdAccordion',
 			transclude: true,
 			scope: true,
 			replace: true,
@@ -86,7 +86,7 @@ angular.module('vd.directive.accordion', [])
 							var childScope = scope.$new();
 							childScope[itemName] = item;
 
-							var tpl = document.createElement('accordion-pane');
+							var tpl = document.createElement('vd-accordion-pane');
 							for(var j=0; j < template.length; j++) {
 								tpl.appendChild(template[j].cloneNode(true));
 							}
