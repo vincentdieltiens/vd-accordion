@@ -80,6 +80,9 @@ angular.module('vd.directive.accordion', [])
 					// TODO : save the list of existing panes and remove or add only
 					// the panes needed
 					scope.$watch(collection, function(items) {
+						if (angular.isUndefined(items) || items == null) {
+							return;
+						}
 
 						for(var i=0, n=items.length; i < n; i++) {
 							var item = items[i];
@@ -94,7 +97,7 @@ angular.module('vd.directive.accordion', [])
 
 							$compile(tpl)(childScope);
 						}
-					});
+					}, true);
 
 				} else {
 
