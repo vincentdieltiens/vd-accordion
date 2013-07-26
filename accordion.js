@@ -1,8 +1,12 @@
+
+
 angular.module('vd.directive.accordion', [])
 	/**
 	 * 
 	 */
 	.directive('vdAccordion', function() {
+		"use strict";
+
 		return {
 			restrict:'AE',
 			replace: true,
@@ -17,7 +21,7 @@ angular.module('vd.directive.accordion', [])
 				 */
 				this.addPane = function(pane) {
 					$scope.panes.push(pane);
-				}
+				};
 
 				/**
 				 * Open a given pane. If the attribute close-all exist in the <accordion> tag,
@@ -43,12 +47,14 @@ angular.module('vd.directive.accordion', [])
 					if (pane.opened) {
 						$scope.openedPanes.push(pane);
 					}
-				}
+				};
 			},
 			template: '<div class="accordion" ng-transclude></div>'
 		};
 	})
 	.directive('vdAccordionPane', function($compile) {
+		"use strict";
+		
 		return {
 			restrict:'AE',
 			require: '^vdAccordion',
@@ -80,34 +86,36 @@ angular.module('vd.directive.accordion', [])
 					// TODO : save the list of existing panes and remove or add only
 					// the panes needed
 					scope.$watch(collection, function(items) {
-						if (angular.isUndefined(items) || items == null) {
+						if (angular.isUndefined(items) || items === null) {
 							return;
 						}
 
 						for(var i=0, n=items.length; i < n; i++) {
+
 							var item = items[i];
 							var childScope = scope.$new();
 							childScope[itemName] = item;
 
 							var tpl = document.createElement('vd-accordion-pane');
+							
 							for(var j=0; j < template.length; j++) {
 								tpl.appendChild(template[j].cloneNode(true));
 							}
 							parent.appendChild(tpl);
-
+							tpl.querySelectorAll('.accordion-content')[0].setAttribute('ng-non-bindable', '');
+							
 							$compile(tpl)(childScope);
 						}
 					}, true);
 
 				} else {
-
 					// Register the pane to the accordion
 					accordionCtrl.addPane(scope);
 
 					// Open the pane via the accordion
 					scope.open = function() {
 						accordionCtrl.open(scope);
-					}
+					};
 
 					// Open/close the accordion by clicking on the head
 					element[0].querySelectorAll('.accordion-head')[0].addEventListener('click', function() {
@@ -116,10 +124,15 @@ angular.module('vd.directive.accordion', [])
 					});
 
 					var content = element[0].querySelectorAll('.accordion-content')[0];
-
+					var isNonBindable = content.hasAttribute('ng-non-bindable');
 					// Apply CSS3 animation when the pane is opened / closed
 					scope.$watch('opened', function(opened) {
 						if (opened) {
+							if (isNonBindable) {
+								content.removeAttribute('ng-non-bindable');
+								$compile(content)(scope);
+								isNonBindable = false;
+							}
 							content.classList.add('slide-in-setup');
 							setTimeout(function() {
 								content.classList.add('slide-in-start');
@@ -131,7 +144,7 @@ angular.module('vd.directive.accordion', [])
 								content.classList.remove('slide-in-start');
 							});
 						}
-					})
+					});
 				}
 			},
 			template: '<div ng-transclude></div>'
